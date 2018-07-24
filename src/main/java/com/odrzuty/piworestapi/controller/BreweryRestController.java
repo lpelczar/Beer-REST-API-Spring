@@ -5,6 +5,7 @@ import com.odrzuty.piworestapi.model.Brewery;
 import com.odrzuty.piworestapi.repository.BreweryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -38,7 +39,7 @@ public class BreweryRestController {
     }
 
     @PutMapping("/breweries/{id}")
-    public Brewery updateNote(@PathVariable(value = "id") Integer breweryId,
+    public Brewery updateBrewery(@PathVariable(value = "id") Integer breweryId,
                            @Valid @RequestBody Brewery breweryFromJson) {
 
         Brewery brewery = breweryRepository.findById(breweryId)
@@ -47,5 +48,15 @@ public class BreweryRestController {
         breweryFromJson.setId(brewery.getId());
 
         return breweryRepository.save(brewery);
+    }
+
+    @DeleteMapping("/breweries/{id}")
+    public ResponseEntity<?> deleteBrewery(@PathVariable(value = "id") Integer breweryId) {
+        Brewery brewery = breweryRepository.findById(breweryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Brewery", "id", breweryId));
+
+        breweryRepository.delete(brewery);
+
+        return ResponseEntity.ok().build();
     }
 }
