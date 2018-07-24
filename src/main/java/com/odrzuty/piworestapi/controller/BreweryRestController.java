@@ -36,4 +36,16 @@ public class BreweryRestController {
         return breweryRepository.findById(breweryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Brewery", "id", breweryId));
     }
+
+    @PutMapping("/breweries/{id}")
+    public Brewery updateNote(@PathVariable(value = "id") Integer breweryId,
+                           @Valid @RequestBody Brewery breweryFromJson) {
+
+        Brewery brewery = breweryRepository.findById(breweryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Brewery", "id", breweryId));
+
+        breweryFromJson.setId(brewery.getId());
+
+        return breweryRepository.save(brewery);
+    }
 }
