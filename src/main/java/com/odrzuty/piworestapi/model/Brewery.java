@@ -5,9 +5,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -15,7 +17,7 @@ import java.util.List;
 @Setter
 @Getter
 @ToString
-public class Brewery {
+public class Brewery implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

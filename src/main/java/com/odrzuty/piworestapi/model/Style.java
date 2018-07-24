@@ -5,12 +5,13 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "styles")
 @Setter
 @Getter
-public class Style {
+public class Style implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
