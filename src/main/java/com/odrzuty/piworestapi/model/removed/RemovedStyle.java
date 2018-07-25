@@ -3,9 +3,7 @@ package com.odrzuty.piworestapi.model.removed;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
@@ -14,6 +12,10 @@ import java.io.Serializable;
 @Setter
 @Getter
 public class RemovedStyle implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column(name = "cat_name")
     @Size(max = 255)
