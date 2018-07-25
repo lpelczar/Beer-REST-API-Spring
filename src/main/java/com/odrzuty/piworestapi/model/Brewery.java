@@ -80,4 +80,23 @@ public class Brewery implements Serializable {
 
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getAddress1() {
+        return address1;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public String getCode() {
+        return code;
+    }
 }

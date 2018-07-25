@@ -2,13 +2,22 @@ package com.odrzuty.piworestapi.controller;
 
 
 import com.odrzuty.piworestapi.exception.ResourceNotFoundException;
+import com.odrzuty.piworestapi.exception.ResourceRelatedException;
 import com.odrzuty.piworestapi.model.Category;
+import com.odrzuty.piworestapi.model.removed.RemovedCategory;
 import com.odrzuty.piworestapi.repository.CategoryRepository;
+import com.odrzuty.piworestapi.repository.removed.RemovedCategoryRepository;
+import org.hibernate.HibernateError;
+import org.hibernate.HibernateException;
+import org.hibernate.JDBCException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintDeclarationException;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+import java.sql.SQLDataException;
 import java.util.Collection;
 
 @RestController
@@ -16,10 +25,12 @@ import java.util.Collection;
 public class CategoryRestController {
 
     private final CategoryRepository categoryRepository;
+    private final RemovedCategoryRepository removedCategoryRepository;
 
     @Autowired
-    public CategoryRestController(CategoryRepository categoryRepository) {
+    public CategoryRestController(CategoryRepository categoryRepository, RemovedCategoryRepository removedCategoryRepository) {
         this.categoryRepository = categoryRepository;
+        this.removedCategoryRepository = removedCategoryRepository;
     }
 
     @GetMapping(value = "/categories", produces = "application/json")
@@ -52,11 +63,26 @@ public class CategoryRestController {
 
     @DeleteMapping("/categories/{id}")
     public ResponseEntity<?> deleteCategory(@PathVariable(value = "id") Integer categoryId) {
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));
 
-        categoryRepository.delete(category);
+        try {
+            Category category = categoryRepository.findById(categoryId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));
 
-        return ResponseEntity.ok().build();
+            saveRemoved(category);
+
+            categoryRepository.delete(category);
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            //log ex
+            throw new ResourceRelatedException("Category", "id", categoryId);
+        }
+    }
+
+    private void saveRemoved(Category category) {
+
+        String categoryName = category.getName();
+        removedCategoryRepository.save(new RemovedCategory(categoryName));
+
     }
 }
