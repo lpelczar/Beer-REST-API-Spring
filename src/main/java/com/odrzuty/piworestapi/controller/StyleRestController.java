@@ -67,7 +67,7 @@ public class StyleRestController {
     }
 
     private void savedRemoved(Style style) {
-        
+
         String styleName = style.getName();
         String categoryName = style.getCategory().getName();
         removedStyleRepository.save(new RemovedStyle(styleName, categoryName));
