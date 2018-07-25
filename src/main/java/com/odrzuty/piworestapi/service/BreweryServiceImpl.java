@@ -23,4 +23,9 @@ public class BreweryServiceImpl implements BreweryService {
         return breweryRepository.findAll();
     }
 
+    @Override
+    public Brewery save(Brewery brewery) {
+        return breweryRepository.save(brewery);
+    }
+
 }

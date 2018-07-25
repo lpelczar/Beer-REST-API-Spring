@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface BreweryService {
     List<Brewery> findAll();
+    Brewery save(Brewery brewery);
 }
