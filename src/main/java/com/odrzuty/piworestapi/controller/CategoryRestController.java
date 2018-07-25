@@ -3,7 +3,9 @@ package com.odrzuty.piworestapi.controller;
 
 import com.odrzuty.piworestapi.exception.ResourceNotFoundException;
 import com.odrzuty.piworestapi.model.Category;
+import com.odrzuty.piworestapi.model.removed.RemovedCategory;
 import com.odrzuty.piworestapi.repository.CategoryRepository;
+import com.odrzuty.piworestapi.repository.removed.RemovedCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +18,12 @@ import java.util.Collection;
 public class CategoryRestController {
 
     private final CategoryRepository categoryRepository;
+    private final RemovedCategoryRepository removedCategoryRepository;
 
     @Autowired
-    public CategoryRestController(CategoryRepository categoryRepository) {
+    public CategoryRestController(CategoryRepository categoryRepository, RemovedCategoryRepository removedCategoryRepository) {
         this.categoryRepository = categoryRepository;
+        this.removedCategoryRepository = removedCategoryRepository;
     }
 
     @GetMapping(value = "/categories", produces = "application/json")
@@ -55,8 +59,17 @@ public class CategoryRestController {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));
 
+        saveRemoved(category);
+
         categoryRepository.delete(category);
 
         return ResponseEntity.ok().build();
+    }
+
+    private void saveRemoved(Category category) {
+
+        String categoryName = category.getName();
+        removedCategoryRepository.save(new RemovedCategory(categoryName));
+
     }
 }
