@@ -1,5 +1,6 @@
 package com.odrzuty.piworestapi.service;
 
+import com.odrzuty.piworestapi.exception.ResourceNotFoundException;
 import com.odrzuty.piworestapi.model.Brewery;
 import com.odrzuty.piworestapi.repository.BreweryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,14 @@ public class BreweryServiceImpl implements BreweryService {
     public Brewery save(Brewery brewery) {
         return breweryRepository.save(brewery);
     }
+
+    @Override
+    public Brewery findById(int breweryId) {
+        return breweryRepository
+                .findById(breweryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Brewery", "id", breweryId));
+    }
+
+
 
 }

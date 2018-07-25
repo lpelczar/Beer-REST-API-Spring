@@ -35,8 +35,7 @@ public class BreweryRestController {
 
     @GetMapping("/breweries/{id}")
     public Brewery getBreweryById(@PathVariable(value = "id") Integer breweryId) {
-        return breweryService.findById(breweryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Brewery", "id", breweryId));
+        return breweryService.findById(breweryId);
     }
 
     @PutMapping("/breweries/{id}")
