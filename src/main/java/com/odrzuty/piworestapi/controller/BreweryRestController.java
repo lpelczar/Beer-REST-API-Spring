@@ -4,7 +4,7 @@ import com.odrzuty.piworestapi.exception.ResourceNotFoundException;
 import com.odrzuty.piworestapi.model.Brewery;
 import com.odrzuty.piworestapi.model.removed.RemovedBrewery;
 import com.odrzuty.piworestapi.repository.BreweryRepository;
-import com.odrzuty.piworestapi.repository.RemovedBreveryRepository;
+import com.odrzuty.piworestapi.repository.removed.RemovedBreveryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
