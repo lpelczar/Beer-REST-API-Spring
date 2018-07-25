@@ -40,20 +40,15 @@ public class BreweryRestController {
 
     @PutMapping("/breweries/{id}")
     public Brewery updateBrewery(@PathVariable(value = "id") Integer breweryId,
-                           @Valid @RequestBody Brewery breweryFromJson) {
-
-        Brewery brewery = breweryService.findById(breweryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Brewery", "id", breweryId));
-
+                                 @Valid @RequestBody Brewery breweryFromJson) {
+        Brewery brewery = breweryService.findById(breweryId);
         breweryFromJson.setId(brewery.getId());
-
         return breweryService.save(brewery);
     }
 
     @DeleteMapping("/breweries/{id}")
     public ResponseEntity<?> deleteBrewery(@PathVariable(value = "id") Integer breweryId) {
-        Brewery brewery = breweryService.findById(breweryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Brewery", "id", breweryId));
+        Brewery brewery = breweryService.findById(breweryId);
         breweryService.delete(brewery);
         return ResponseEntity.ok().build();
     }

@@ -18,7 +18,6 @@ public class BreweryServiceImpl implements BreweryService {
         this.breweryRepository = breweryRepository;
     }
 
-
     @Override
     public List<Brewery> findAll() {
         return breweryRepository.findAll();
@@ -36,6 +35,8 @@ public class BreweryServiceImpl implements BreweryService {
                 .orElseThrow(() -> new ResourceNotFoundException("Brewery", "id", breweryId));
     }
 
-
-
+    @Override
+    public void delete(Brewery brewery) {
+        breweryRepository.delete(brewery);
+    }
 }
