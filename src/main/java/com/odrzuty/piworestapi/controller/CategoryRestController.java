@@ -2,15 +2,22 @@ package com.odrzuty.piworestapi.controller;
 
 
 import com.odrzuty.piworestapi.exception.ResourceNotFoundException;
+import com.odrzuty.piworestapi.exception.ResourceRelatedException;
 import com.odrzuty.piworestapi.model.Category;
 import com.odrzuty.piworestapi.model.removed.RemovedCategory;
 import com.odrzuty.piworestapi.repository.CategoryRepository;
 import com.odrzuty.piworestapi.repository.removed.RemovedCategoryRepository;
+import org.hibernate.HibernateError;
+import org.hibernate.HibernateException;
+import org.hibernate.JDBCException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintDeclarationException;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+import java.sql.SQLDataException;
 import java.util.Collection;
 
 @RestController
@@ -56,14 +63,20 @@ public class CategoryRestController {
 
     @DeleteMapping("/categories/{id}")
     public ResponseEntity<?> deleteCategory(@PathVariable(value = "id") Integer categoryId) {
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));
 
-        saveRemoved(category);
+        try {
+            Category category = categoryRepository.findById(categoryId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));
 
-        categoryRepository.delete(category);
+            saveRemoved(category);
 
-        return ResponseEntity.ok().build();
+            categoryRepository.delete(category);
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            //log ex
+            throw new ResourceRelatedException("Category", "id", categoryId);
+        }
     }
 
     private void saveRemoved(Category category) {

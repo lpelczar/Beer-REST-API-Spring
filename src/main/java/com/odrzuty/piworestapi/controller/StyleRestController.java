@@ -2,6 +2,7 @@ package com.odrzuty.piworestapi.controller;
 
 
 import com.odrzuty.piworestapi.exception.ResourceNotFoundException;
+import com.odrzuty.piworestapi.exception.ResourceRelatedException;
 import com.odrzuty.piworestapi.model.Style;
 import com.odrzuty.piworestapi.model.removed.RemovedStyle;
 import com.odrzuty.piworestapi.repository.StyleRepository;
@@ -56,14 +57,20 @@ public class StyleRestController {
 
     @DeleteMapping("/styles/{id}")
     public ResponseEntity<?> deleteStyle(@PathVariable(value = "id") Integer styleId) {
-        Style style = styleRepository.findById(styleId)
-                .orElseThrow(() -> new ResourceNotFoundException("Style", "id", styleId));
 
-        savedRemoved(style);
+        try {
+            Style style = styleRepository.findById(styleId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Style", "id", styleId));
 
-        styleRepository.delete(style);
+            savedRemoved(style);
 
-        return ResponseEntity.ok().build();
+            styleRepository.delete(style);
+
+            return ResponseEntity.ok().build();
+        }catch (Exception e){
+            //log ex
+            throw new ResourceRelatedException("Style", "id", styleId);
+        }
     }
 
     private void savedRemoved(Style style) {
