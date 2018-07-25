@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "styles")
+@Table(name = "removed_styles")
 @Setter
 @Getter
 public class RemovedStyle implements Serializable {

@@ -20,7 +20,7 @@ public class RemovedCategoryController {
         this.removedCategoryRepository = removedCategoryRepository;
     }
 
-    @GetMapping(value = "/removed-breweries", produces = "application/json")
+    @GetMapping(value = "/removed-categories", produces = "application/json")
     public Collection<RemovedCategory> getAllCategories() {
         return removedCategoryRepository.findAll();
     }
