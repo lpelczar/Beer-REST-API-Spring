@@ -37,7 +37,11 @@ public class BreweryServiceImpl implements BreweryService {
         Brewery requestedBrewery = breweryRepository
                 .findById(breweryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Brewery", "id", breweryId));
-        loggerService.logInfo(String.format("(BREWERIES) Brewery \"%s\" has been requested from database", requestedBrewery.getName()));
+        loggerService
+                .logInfo(String.format(
+                        "(BREWERIES) Brewery \"%s\" has been requested from database",
+                        requestedBrewery.getName())
+                );
         return requestedBrewery;
     }
 
