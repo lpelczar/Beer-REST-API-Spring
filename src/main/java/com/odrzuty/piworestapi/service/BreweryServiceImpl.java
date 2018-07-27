@@ -28,7 +28,10 @@ public class BreweryServiceImpl implements BreweryService {
 
     @Override
     public Brewery save(Brewery brewery) {
-        loggerService.logInfo(String.format("(BREWERIES) Brewery \"%s\" has been added to database", brewery.getName()));
+        loggerService.logInfo(
+                String.format("(BREWERIES) Brewery \"%s\" has been added to database",
+                        brewery.getName())
+        );
         return breweryRepository.save(brewery);
     }
 
@@ -47,6 +50,10 @@ public class BreweryServiceImpl implements BreweryService {
 
     @Override
     public void delete(Brewery brewery) {
+        loggerService.logInfo(String.format(
+                "(BREWERIES) Brewery \"%s\" has been deleted from database",
+                brewery.getName())
+        );
         breweryRepository.delete(brewery);
     }
 }
