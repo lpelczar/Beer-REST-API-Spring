@@ -35,7 +35,7 @@ public class BeerRestController {
     @GetMapping("/beers/{id}")
     public Beer getBeerById(@PathVariable(value = "id") Integer beerId) {
         Beer beer = beerRepository.findBeerByIdAndRemovedIsFalse(beerId);
-        if(beer == null ||beer.isRemoved()){
+        if(beer == null ){
             throw new ResourceNotFoundException("Beer", "id", beerId);
         }else{
             return beer;

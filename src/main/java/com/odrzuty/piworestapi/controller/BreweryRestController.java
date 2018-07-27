@@ -1,5 +1,6 @@
 package com.odrzuty.piworestapi.controller;
 
+import com.odrzuty.piworestapi.exception.ResourceNotFoundException;
 import com.odrzuty.piworestapi.model.Brewery;
 import com.odrzuty.piworestapi.service.BreweryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,12 @@ public class BreweryRestController {
 
     @GetMapping("/breweries/{id}")
     public Brewery getBreweryById(@PathVariable(value = "id") Integer breweryId) {
-        return breweryService.findById(breweryId);
+        Brewery brewery = breweryService.findById(breweryId);
+        if(brewery == null){
+            throw new ResourceNotFoundException("Brewery", "id", breweryId);
+        }else {
+            return brewery;
+        }
     }
 
     @PutMapping("/breweries/{id}")
