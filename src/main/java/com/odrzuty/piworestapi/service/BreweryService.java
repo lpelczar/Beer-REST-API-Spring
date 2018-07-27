@@ -1,10 +1,14 @@
 package com.odrzuty.piworestapi.service;
 
 import com.odrzuty.piworestapi.model.Brewery;
+import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
+@Service
 public interface BreweryService {
     Iterable<Brewery> findAll();
-    Brewery find(Integer id);
+    Optional<Brewery> find(Integer id);
     void save(Brewery brewery);
-    void remove(Integer id);
+    void delete(Brewery brewery);
 }

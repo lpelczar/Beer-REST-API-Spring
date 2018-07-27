@@ -3,7 +3,11 @@ package com.odrzuty.piworestapi.service;
 
 import com.odrzuty.piworestapi.model.Brewery;
 import com.odrzuty.piworestapi.repository.BreweryRepository;
+import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
+@Service
 public class BreweryServiceImpl implements BreweryService {
 
     private BreweryRepository repository;
@@ -15,11 +19,12 @@ public class BreweryServiceImpl implements BreweryService {
     }
     @Override
     public Iterable<Brewery> findAll() {
-        return null;
+        logger.logInfo("Breweries have been loaded by client");
+        return repository.findAll();
     }
 
     @Override
-    public Brewery find(Integer id) {
+    public Optional<Brewery> find(Integer id) {
         return null;
     }
 
@@ -29,7 +34,7 @@ public class BreweryServiceImpl implements BreweryService {
     }
 
     @Override
-    public void remove(Integer id) {
+    public void delete(Brewery brewery) {
 
     }
 }

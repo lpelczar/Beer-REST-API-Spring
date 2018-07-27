@@ -3,8 +3,12 @@ package com.odrzuty.piworestapi.controller;
 import com.odrzuty.piworestapi.exception.ResourceNotFoundException;
 import com.odrzuty.piworestapi.model.Brewery;
 import com.odrzuty.piworestapi.repository.BreweryRepository;
+import com.odrzuty.piworestapi.service.BreweryService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,26 +19,27 @@ import java.util.Collection;
 @RequestMapping("/api")
 public class BreweryRestController {
 
-    private final BreweryRepository breweryRepository;
+    private BreweryService service;
 
     @Autowired
-    public BreweryRestController(BreweryRepository breweryRepository) {
-        this.breweryRepository = breweryRepository;
+    public BreweryRestController(@Qualifier("breweryService") BreweryService service) {
+        this.service = service;
     }
 
     @GetMapping(value = "/breweries", produces = "application/json")
-    public Collection<Brewery> getAllBreweries() {
-        return breweryRepository.findAll();
+    public Iterable<Brewery> getAllBreweries() {
+        return service.findAll();
     }
 
     @PostMapping("/breweries")
     public Brewery createBrewery(@Valid @RequestBody Brewery brewery) {
-        return breweryRepository.save(brewery);
+        service.save(brewery);
+        return brewery;
     }
 
     @GetMapping("/breweries/{id}")
     public Brewery getBreweryById(@PathVariable(value = "id") Integer breweryId) {
-        return breweryRepository.findById(breweryId)
+        return service.find(breweryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Brewery", "id", breweryId));
     }
 
@@ -42,20 +47,20 @@ public class BreweryRestController {
     public Brewery updateBrewery(@PathVariable(value = "id") Integer breweryId,
                            @Valid @RequestBody Brewery breweryFromJson) {
 
-        Brewery brewery = breweryRepository.findById(breweryId)
+        Brewery brewery = service.find(breweryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Brewery", "id", breweryId));
 
         breweryFromJson.setId(brewery.getId());
-
-        return breweryRepository.save(brewery);
+        service.save(brewery);
+        return brewery;
     }
 
     @DeleteMapping("/breweries/{id}")
     public ResponseEntity<?> deleteBrewery(@PathVariable(value = "id") Integer breweryId) {
-        Brewery brewery = breweryRepository.findById(breweryId)
+        Brewery brewery = service.find(breweryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Brewery", "id", breweryId));
 
-        breweryRepository.delete(brewery);
+        service.delete(brewery);
 
         return ResponseEntity.ok().build();
     }
