@@ -6,6 +6,7 @@ import com.odrzuty.piworestapi.repository.BeerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -18,12 +19,6 @@ public class BeerServiceImpl implements BeerService {
     public BeerServiceImpl(BeerRepository beerRepository, LoggerService loggerService) {
         this.beerRepository = beerRepository;
         this.loggerService = loggerService;
-    }
-
-    @Override
-    public List<Beer> findAll() {
-        loggerService.logInfo("(BEERS) All entities were requested.");
-        return beerRepository.findAll();
     }
 
     @Override
@@ -55,5 +50,15 @@ public class BeerServiceImpl implements BeerService {
                 beer.getName())
         );
         beerRepository.delete(beer);
+    }
+
+    @Override
+    public Collection<Beer> findAllByRemovedIsFalse() {
+        return beerRepository.findAllByRemovedIsFalse();
+    }
+
+    @Override
+    public Beer findBeerByIdAndRemovedIsFalse(Integer id) {
+        return beerRepository.findBeerByIdAndRemovedIsFalse(id);
     }
 }
