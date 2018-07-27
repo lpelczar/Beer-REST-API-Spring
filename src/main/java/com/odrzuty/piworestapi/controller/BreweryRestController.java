@@ -22,8 +22,8 @@ public class BreweryRestController {
     private BreweryService service;
 
     @Autowired
-    public BreweryRestController(@Qualifier("breweryService") BreweryService service) {
-        this.service = service;
+    public BreweryRestController(BreweryService breweryService) {
+        this.service = breweryService;
     }
 
     @GetMapping(value = "/breweries", produces = "application/json")

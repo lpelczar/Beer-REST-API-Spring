@@ -13,9 +13,9 @@ public class BreweryServiceImpl implements BreweryService {
     private BreweryRepository repository;
     private LoggerService logger;
 
-    public BreweryServiceImpl(BreweryRepository repository, LoggerService logger) {
+    public BreweryServiceImpl(BreweryRepository repository, LoggerService loggerService) {
         this.repository = repository;
-        this.logger = logger;
+        this.logger = loggerService;
     }
     @Override
     public Iterable<Brewery> findAll() {
