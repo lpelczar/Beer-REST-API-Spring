@@ -78,7 +78,7 @@ class BreweryRestControllerTest {
     }
 
     @Test
-    void post_brewery_with_id_return_status_code_204() {
+    void post_brewery_with_id_return_status_code_200() {
 
         String jsonBrewery = "{\"id\" : 1, \"name\" : \"(512) Nowy nowy\", \"address1\" : \"407 Radam, F200\", " +
                 "\"city\" : \"Austin\", \"state\" : \"Texas\", \"code\" : \"78745\", \"country\" : \"United States\", " +
@@ -92,19 +92,19 @@ class BreweryRestControllerTest {
                 when().
                 post("/api/breweries/").
                 then().
-                statusCode(400);
+                statusCode(200);
     }
 
     @Test
-    void post_with_invalid_path_return_status_code_204() {
+    void post_with_invalid_path_return_status_code_405() {
         when().
                 post("/api/breweries/323").
                 then().
-                statusCode(204);
+                statusCode(405);
     }
 
     @Test
-    void put_correct_brewery_return_status_code_201() {
+    void put_correct_brewery_return_status_code_200() {
 
         String jsonBrewery = "{\"id\" : 1, \"name\" : \"Nowe\", \"address1\" : \"407 Radam, F200\", " +
                 "\"city\" : \"Austin\", \"state\" : \"Texas\", \"code\" : \"78745\", \"country\" : \"United States\", " +
@@ -113,90 +113,45 @@ class BreweryRestControllerTest {
                 "local, domestic and organic ingredients as possible.\" }";
 
         given().
+                contentType("application/json").
                 body(jsonBrewery).
                 when().
                 put("/api/breweries/{id}", 1).
                 then().
-                statusCode(201);
+                statusCode(200);
     }
 
     @Test
-    void put_brewery_invalid_path_return_status_code_204() {
+    void put_brewery_invalid_path_return_status_code_405() {
         when().
                 put("/api/breweries/").
                 then().
-                statusCode(204);
-
-        when().
-                put("/api/breweries/123/132").
-                then().
-                statusCode(204);
+                statusCode(405);
     }
 
     @Test
-    void put_brewery_with_invalid_id_return_status_code_204() {
-        String jsonBrewery = "{\"id\" : 200000000, \"name\" : \"Nowe\", \"address1\" : \"407 Radam, F200\", " +
-                "\"city\" : \"Austin\", \"state\" : \"Texas\", \"code\" : \"78745\", \"country\" : \"United States\", " +
-                "\"phone\" : \"512.707.2337\", \"website\" : \"http://512brewing.com/\", \"descript\" : \"(512) Brewing"+
-                " Company is a microbrewery located in the heart of Austin that brews for the community using as many " +
-                "local, domestic and organic ingredients as possible.\" }";
-
-        given().
-                body(jsonBrewery).
-                when().
-                put("/api/breweries/{id}", 1).
-                then().
-                statusCode(204);
-    }
-
-    @Test
-    void put_brewery_with_id_mismatch_return_status_code_204() {
-
-        String jsonBrewery = "{\"id\" : 2, \"name\" : \"Nowe\", \"address1\" : \"407 Radam, F200\", " +
-                "\"city\" : \"Austin\", \"state\" : \"Texas\", \"code\" : \"78745\", \"country\" : \"United States\", " +
-                "\"phone\" : \"512.707.2337\", \"website\" : \"http://512brewing.com/\", \"descript\" : \"(512) Brewing"+
-                " Company is a microbrewery located in the heart of Austin that brews for the community using as many " +
-                "local, domestic and organic ingredients as possible.\" }";
-
-        given().
-                body(jsonBrewery).
-                when().
-                put("/api/breweries/{id}", 1).
-                then().
-                statusCode(204);
-    }
-
-    @Test
-    void put_brewery_with_empty_body_return_status_code_204() {
+    void put_brewery_with_empty_body_return_status_code_415() {
         given().
                 body("").
                 when().
                 put("/api/breweries/{id}", 1).
                 then().
-                statusCode(204);
+                statusCode(415);
     }
 
     @Test
-    void delete_brewery_return_status_code_202() {
-        when().
-                delete("/api/breweries/22").
-                then().
-                statusCode(202);
-    }
-
-    @Test
-    void delete_brewery_with_invalid_path_return_status_code_204() {
+    void delete_brewery_with_invalid_path_return_status_code_404() {
         when().
                 delete("/api/breweries/123/132").
                 then().
-                statusCode(204);
+                statusCode(404);
     }
 
     @Test
-    void delete_brewery_with_invalid_id_return_status_code_204() {
+    void delete_brewery_with_invalid_id_return_status_code_404() {
         when().
                 delete("/api/breweries/{id}", 200000000).
                 then().
-                statusCode(204);
+                statusCode(404);
     }
 }
