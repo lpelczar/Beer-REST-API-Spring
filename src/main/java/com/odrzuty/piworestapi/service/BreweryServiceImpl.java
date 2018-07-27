@@ -28,6 +28,7 @@ public class BreweryServiceImpl implements BreweryService {
 
     @Override
     public Brewery save(Brewery brewery) {
+        loggerService.logInfo(String.format("(BREWERIES) Brewery \"%s\" has been added to database", brewery.getName()));
         return breweryRepository.save(brewery);
     }
 
