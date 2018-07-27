@@ -4,9 +4,7 @@ package com.odrzuty.piworestapi.controller;
 import com.odrzuty.piworestapi.exception.ResourceNotFoundException;
 import com.odrzuty.piworestapi.exception.ResourceRelatedException;
 import com.odrzuty.piworestapi.model.Style;
-import com.odrzuty.piworestapi.model.removed.RemovedStyle;
 import com.odrzuty.piworestapi.repository.StyleRepository;
-import com.odrzuty.piworestapi.repository.removed.RemovedStyleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +17,10 @@ import java.util.Collection;
 public class StyleRestController {
 
     private final StyleRepository styleRepository;
-    private final RemovedStyleRepository removedStyleRepository;
 
     @Autowired
-    public StyleRestController(StyleRepository styleRepository, RemovedStyleRepository removedStyleRepository ) {
+    public StyleRestController(StyleRepository styleRepository) {
         this.styleRepository = styleRepository;
-        this.removedStyleRepository = removedStyleRepository;
     }
 
     @GetMapping(value = "/styles", produces = "application/json")
@@ -62,7 +58,6 @@ public class StyleRestController {
             Style style = styleRepository.findById(styleId)
                     .orElseThrow(() -> new ResourceNotFoundException("Style", "id", styleId));
 
-            savedRemoved(style);
 
             styleRepository.delete(style);
 
@@ -73,10 +68,5 @@ public class StyleRestController {
         }
     }
 
-    private void savedRemoved(Style style) {
 
-        String styleName = style.getName();
-        String categoryName = style.getCategory().getName();
-        removedStyleRepository.save(new RemovedStyle(styleName, categoryName));
-    }
 }

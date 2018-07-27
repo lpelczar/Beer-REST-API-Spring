@@ -2,6 +2,7 @@ package com.odrzuty.piworestapi.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -43,7 +44,12 @@ public class Beer implements Serializable {
 
     private String descript;
 
+    @Column(nullable = false)
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private boolean removed = false;
+
 
     public Beer() {
     }
+
 }

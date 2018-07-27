@@ -2,9 +2,7 @@ package com.odrzuty.piworestapi.controller;
 
 import com.odrzuty.piworestapi.exception.ResourceNotFoundException;
 import com.odrzuty.piworestapi.model.Beer;
-import com.odrzuty.piworestapi.model.removed.RemovedBeer;
 import com.odrzuty.piworestapi.repository.BeerRepository;
-import com.odrzuty.piworestapi.repository.removed.RemovedBeerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,17 +16,15 @@ import java.util.Collection;
 public class BeerRestController {
 
     private final BeerRepository beerRepository;
-    private final RemovedBeerRepository removedBeerRepository;
 
     @Autowired
-    public BeerRestController(BeerRepository beerRepository, RemovedBeerRepository removedBeerRepository) {
+    public BeerRestController(BeerRepository beerRepository) {
         this.beerRepository = beerRepository;
-        this.removedBeerRepository = removedBeerRepository;
     }
 
     @GetMapping(value = "/beers", produces = "application/json")
     public Collection<Beer> getAllBreweries() {
-        return beerRepository.findAll();
+        return beerRepository.findAllByRemovedIsFalse();
     }
 
     @PostMapping("/beers")
@@ -38,8 +34,13 @@ public class BeerRestController {
 
     @GetMapping("/beers/{id}")
     public Beer getBeerById(@PathVariable(value = "id") Integer beerId) {
-        return beerRepository.findById(beerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Beer", "id", beerId));
+        Beer beer = beerRepository.findBeerByIdAndRemovedIsFalse(beerId);
+        if(beer == null ||beer.isRemoved()){
+            throw new ResourceNotFoundException("Beer", "id", beerId);
+        }else{
+            return beer;
+        }
+
     }
 
     @PutMapping("/beers/{id}")
@@ -59,18 +60,11 @@ public class BeerRestController {
         Beer beer = beerRepository.findById(beerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Beer", "id", beerId));
 
-        saveRemoved(beer);
+        beer.setRemoved(true);
+        beerRepository.save(beer);
 
-        beerRepository.delete(beer);
 
         return ResponseEntity.ok().build();
     }
 
-    private void saveRemoved(Beer beer) {
-
-        String breweryName = beer.getBrewery().getName();
-        String categoryName = beer.getCategory().getName();
-        String styleName = beer.getStyle().getName();
-        removedBeerRepository.save(new RemovedBeer(breweryName, categoryName, styleName));
-    }
 }
