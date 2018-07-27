@@ -1,10 +1,8 @@
 package com.odrzuty.piworestapi.controller;
 
 
-import com.odrzuty.piworestapi.exception.ResourceNotFoundException;
 import com.odrzuty.piworestapi.exception.ResourceRelatedException;
 import com.odrzuty.piworestapi.model.Category;
-import com.odrzuty.piworestapi.repository.CategoryRepository;
 import com.odrzuty.piworestapi.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
