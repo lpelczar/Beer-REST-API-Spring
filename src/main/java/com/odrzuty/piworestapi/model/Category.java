@@ -3,6 +3,7 @@ package com.odrzuty.piworestapi.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -21,6 +22,10 @@ public class Category implements Serializable {
     @Size(max = 250)
     @Column(name = "cat_name")
     String name;
+
+    @Column(nullable = false)
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private boolean removed = false;
 
     public Category() {
     }

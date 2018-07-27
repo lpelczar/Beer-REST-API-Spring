@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Type;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -53,6 +54,10 @@ public class Brewery implements Serializable {
     @JsonIgnore
     List<Beer> beers;
 
+    @Column(nullable = false)
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private boolean removed = false;
+
     public Brewery() {
 
     }
@@ -80,4 +85,23 @@ public class Brewery implements Serializable {
 
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getAddress1() {
+        return address1;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public String getCode() {
+        return code;
+    }
 }

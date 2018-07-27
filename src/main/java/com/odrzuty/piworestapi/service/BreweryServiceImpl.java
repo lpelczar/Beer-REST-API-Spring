@@ -12,31 +12,48 @@ import java.util.List;
 public class BreweryServiceImpl implements BreweryService {
 
     private final BreweryRepository breweryRepository;
+    private final LoggerService loggerService;
 
     @Autowired
-    public BreweryServiceImpl(BreweryRepository breweryRepository) {
+    public BreweryServiceImpl(BreweryRepository breweryRepository, LoggerService loggerService) {
         this.breweryRepository = breweryRepository;
+        this.loggerService = loggerService;
     }
 
     @Override
     public List<Brewery> findAll() {
+        loggerService.logInfo("(BREWERIES) All entities were requested.");
         return breweryRepository.findAll();
     }
 
     @Override
     public Brewery save(Brewery brewery) {
+        loggerService.logInfo(
+                String.format("(BREWERIES) Brewery \"%s\" has been added to database",
+                        brewery.getName())
+        );
         return breweryRepository.save(brewery);
     }
 
     @Override
     public Brewery findById(int breweryId) {
-        return breweryRepository
+        Brewery requestedBrewery = breweryRepository
                 .findById(breweryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Brewery", "id", breweryId));
+        loggerService
+                .logInfo(String.format(
+                        "(BREWERIES) Brewery \"%s\" has been requested from database",
+                        requestedBrewery.getName())
+                );
+        return requestedBrewery;
     }
 
     @Override
     public void delete(Brewery brewery) {
+        loggerService.logInfo(String.format(
+                "(BREWERIES) Brewery \"%s\" has been deleted from database",
+                brewery.getName())
+        );
         breweryRepository.delete(brewery);
     }
 }
