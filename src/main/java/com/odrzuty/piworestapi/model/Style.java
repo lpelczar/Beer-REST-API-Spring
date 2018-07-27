@@ -2,6 +2,7 @@ package com.odrzuty.piworestapi.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -24,6 +25,10 @@ public class Style implements Serializable {
     @Column(name = "style_name")
     @Size(max = 255)
     private String name;
+
+    @Column(nullable = false)
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private boolean removed = false;
 
     public Style() {
     }

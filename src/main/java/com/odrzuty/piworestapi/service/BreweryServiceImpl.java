@@ -6,6 +6,7 @@ import com.odrzuty.piworestapi.repository.BreweryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -19,8 +20,8 @@ public class BreweryServiceImpl implements BreweryService {
     }
 
     @Override
-    public List<Brewery> findAll() {
-        return breweryRepository.findAll();
+    public Collection<Brewery> findAll() {
+        return breweryRepository.findAllByRemovedIsFalse();
     }
 
     @Override
@@ -31,8 +32,7 @@ public class BreweryServiceImpl implements BreweryService {
     @Override
     public Brewery findById(int breweryId) {
         return breweryRepository
-                .findById(breweryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Brewery", "id", breweryId));
+                .findByIdAndRemovedIsFalse(breweryId);
     }
 
     @Override
