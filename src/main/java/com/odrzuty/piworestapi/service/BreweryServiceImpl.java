@@ -12,14 +12,17 @@ import java.util.List;
 public class BreweryServiceImpl implements BreweryService {
 
     private final BreweryRepository breweryRepository;
+    private final LoggerService loggerService;
 
     @Autowired
-    public BreweryServiceImpl(BreweryRepository breweryRepository) {
+    public BreweryServiceImpl(BreweryRepository breweryRepository, LoggerService loggerService) {
         this.breweryRepository = breweryRepository;
+        this.loggerService = loggerService;
     }
 
     @Override
     public List<Brewery> findAll() {
+        loggerService.logInfo("(BREWERIES) All entities were requested.");
         return breweryRepository.findAll();
     }
 
