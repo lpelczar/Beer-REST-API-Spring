@@ -8,11 +8,6 @@ services:
       MYSQL_USER: 'root'
       MYSQL_PASSWORD: 'root'
       MYSQL_ROOT_PASSWORD: 'root'
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3306/beer-db"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
     ports:
       - '3306:3306'
     expose:
