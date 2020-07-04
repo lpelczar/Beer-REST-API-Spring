@@ -20,7 +20,7 @@ docker-compose up
 
 Database ERD diagram:
 
-![c1](http://i64.tinypic.com/25gyx7c.png)
+![c1](https://raw.github.com/lpelczar/Beer-REST-API-Spring/master/beer-db-diagram.png)
 
 - application handles GET, POST, PUT and DELETE methods
 - data is sent using JSON format
