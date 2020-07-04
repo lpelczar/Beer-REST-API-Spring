@@ -3,7 +3,6 @@ package com.odrzuty.piworestapi.service;
 import com.odrzuty.piworestapi.model.Brewery;
 
 import java.util.Collection;
-import java.util.List;
 
 public interface BreweryService {
     Collection<Brewery> findAll();
