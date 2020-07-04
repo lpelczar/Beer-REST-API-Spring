@@ -2,7 +2,6 @@ package com.odrzuty.piworestapi.controller;
 
 import com.odrzuty.piworestapi.exception.ResourceNotFoundException;
 import com.odrzuty.piworestapi.model.Beer;
-import com.odrzuty.piworestapi.repository.BeerRepository;
 import com.odrzuty.piworestapi.service.BeerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
